@@ -8848,6 +8848,18 @@ class TCPDF {
 	}
 
 	/**
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	protected function fixFilename($name) {
+		$name = preg_replace('/[\s]+/', '_', $name);
+		$name = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $name);
+		return $name;
+	}
+
+
+	/**
 	 * Send the document to a given destination: string, local file or browser.
 	 * In the last case, the plug-in may be used (if present) or a download ("Save as" dialog box) may be forced.<br />
 	 * The method first calls Close() if necessary to terminate the document.
@@ -8869,8 +8881,7 @@ class TCPDF {
 		}
 		$dest = strtoupper($dest);
 		if ($dest{0} != 'F') {
-			$name = preg_replace('/[\s]+/', '_', $name);
-			$name = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $name);
+			$name = $this->fixFilename($name);
 		}
 		if ($this->sign) {
 			// *** apply digital signature to the document ***
